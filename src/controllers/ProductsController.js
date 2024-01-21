@@ -6,7 +6,7 @@ exports.ProductList=async(req,res)=>{
         let searchValue=req.params.searchValue;
         let skipValue=(pageNo-1)*perPage;
         let data;
-        // let rows;
+        let rows;
 
         if(searchValue!=='0'){
             let SearchRgx={"$regex":searchValue,"$options":"i"};
