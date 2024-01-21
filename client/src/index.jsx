@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import App from './App';
 import "./assets/css/bootstrap.css";
 import "./assets/css/animate.min.css";
