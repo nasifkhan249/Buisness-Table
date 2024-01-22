@@ -1,9 +1,19 @@
-import { Fragment, useState } from "react";
+import React, {Fragment, useEffect, useState} from 'react';
+import {GetProductList} from "../APIRequest/APIRequest";
+import {useSelector} from "react-redux";
+
+
 
 const ProductList = () => {
+    let [searchKey,setSearchKey]=useState("0");
+    let [perPageKey,setPerPageKey]=useState(5);
 
-    let [searchKey]=useState("0")
+    useEffect(()=>{
+        GetProductList(1,perPageKey,searchKey);
+    },[])
 
+    let ALLProduct=useSelector((state)=>(state.product.ALLProduct));
+    let Total=useSelector((state) => (state.product.Total))
 
     return (
         <Fragment>
@@ -32,8 +42,8 @@ const ProductList = () => {
                                       </div>
                                       <div className="col-4">
                                           <div className="input-group mb-3">
-                                              <input type="text" className="form-control form-control-sm" placeholder="Search.." aria-label="Recipient's username" aria-describedby="button-addon2"/>
-                                              <button className="btn  btn-outline-primary btn-sm mb-0" type="button">Search</button>
+                                              <input  type="text" className="form-control form-control-sm" placeholder="Search.." aria-label="Recipient's username" aria-describedby="button-addon2"/>
+                                              <button  className="btn  btn-outline-primary btn-sm mb-0" type="button">Search</button>
                                           </div>
                                       </div>
                                   </div>
@@ -50,33 +60,36 @@ const ProductList = () => {
                                                   </tr>
                                                   </thead>
                                                   <tbody>
-                                                  
-                                                     
+                                                  {
+                                                      ALLProduct.map((item,i)=> {
                                                           <tr>
                                                               <td>
                                                                   <div className="d-flex px-2 py-1">
                                                                       <div>
-                                                                          <img className="avatar me-3" alt=''/>
+                                                                          <img src={item.image}
+                                                                               className="avatar me-3"/>
                                                                       </div>
-                                                                      <div className="d-flex flex-column justify-content-center">
-                                                                          <h6 className="mb-0  text-xs">title</h6>
-                                                                          <p className="text-xs  text-secondary mb-0">category</p>
+                                                                      <div
+                                                                          className="d-flex flex-column justify-content-center">
+                                                                          <h6 className="mb-0  text-xs">{item.title}</h6>
+                                                                          <p className="text-xs  text-secondary mb-0">{item.category}</p>
                                                                       </div>
                                                                   </div>
                                                               </td>
                                                               <td>
-                                                                  <p className="text-xs font-weight-bold mb-0">brand</p>
-                                                                  <p className="text-xs  text-secondary mb-0"> Taka </p>
-                                                              </td >
-                                                              <td>
-                                                                  <p className="badge  bg-gradient-success">stock</p>
+                                                                  <p className="text-xs font-weight-bold mb-0">{item.brand}</p>
+                                                                  <p className="text-xs  text-secondary mb-0">{item.price} Taka </p>
                                                               </td>
                                                               <td>
-                                                                  <span className="text-secondary text-xs font-weight-bold">item</span>
+                                                                  <p className="badge  bg-gradient-success">{item.stock}</p>
+                                                              </td>
+                                                              <td>
+                                                                  <span
+                                                                      className="text-secondary text-xs font-weight-bold">{item.product_code}</span>
                                                               </td>
                                                           </tr>
-                                                 
-
+                                                      })
+                                                  }
 
                                                   </tbody>
                                               </table>
@@ -84,7 +97,8 @@ const ProductList = () => {
                                       </div>
                                       <div className="col-12 mt-5">
                                           <nav aria-label="Page navigation example">
-                                           
+
+
                                           </nav>
                                       </div>
                                   </div>

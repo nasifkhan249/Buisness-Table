@@ -31,11 +31,21 @@ app.use(mongoSanitize())
 app.use(xss())
 app.use(hpp())
 
+app.set('trust proxy',true);
+
 // Body Parser Implement
 app.use(bodyParser.json())
 
 // Request Rate Limit
-const limiter= rateLimit({windowMs:15*60*1000,max:3000})
+// const limiter= rateLimit({windowMs:15*60*1000,max:3000})
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    keyGenerator: function (req) {
+        // Use the correct header or IP address based on your trusted proxies
+        return req.headers['x-real-ip'] || req.ip;
+    },
+});
 app.use(limiter)
 
 
@@ -55,7 +65,7 @@ app.use("/api/v1",router)
 
 // Add React Front End Routing
 app.get('*',function (req,res) {
-    res.sendFile(path.resolve(__dirname,'client','build','index.html'))
+    res.sendFile(path.resolve(__dirname,'client','my-app','build','index.html'))
     
 })
 

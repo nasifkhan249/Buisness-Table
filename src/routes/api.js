@@ -3,6 +3,6 @@ const ProductController=require('../controllers/ProductsController');
 
 const router=express.Router();
 
-router.get("/ProductList/:pageNo/:perPage/:searchValue",ProductController.ProductList);
+router.get("/ProductList/:pageNo/:perPage/:searchKey",ProductController.ProductList);
 
 module.exports=router;
